@@ -17,9 +17,9 @@ from prefect_kube_demo.tasks import shuffler
 from prefect_kube_demo.tasks import reducer
 
 
-with Flow(name='mapreduce-wordcount') as mapreduce_wordcount:
+with Flow(name="mapreduce-wordcount") as mapreduce_wordcount:
 
-    url = Parameter('url', required=True)
+    url = Parameter("url", required=True)
 
     message = download_message(url)
     lines = split_message(message)
@@ -39,6 +39,6 @@ if __name__ == "__main__":
     # and your local Kubernetes cluster (e.g. minikube) in development ASAP.
 
     mapreduce_wordcount.run(
-        parmeters={"url": "https://raw.githubusercontent.com/KTH/ci-hackathon/master/installations/ci-poetry/supercollider_src/poet10/poem.txt"},
+        parmeters={"url": "https://raw.githubusercontent.com/topher-lo/prefect-with-k8/main/src/prefect_kube_demo/data/dream.txt"},
         executor=DaskExecutor()
     )
