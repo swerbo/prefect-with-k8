@@ -118,6 +118,9 @@ flowEnvVars:
     agentType: "kubernetes"
     imageName: "tofulolo/prefect-with-k8-demo"
     imageTag: "latest"
+    coiled:
+      software: "coiled"
+      config: "coiled"
 
 # authentication secrets
 auth:
