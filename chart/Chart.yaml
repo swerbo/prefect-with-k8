@@ -1,0 +1,12 @@
+apiVersion: v2
+name: prefect-custom-agent
+description: Custom Prefect Kubernetes Agent deployment.
+type: application
+home: https://github.com/topher-lo/prefect-with-k8
+version: 0.1.0
+appVersion: "latest"
+maintainers:
+  - name: Christopher Lo
+    email: lochristopherhy@gmail.com
+sources:
+  - https://github.com/topher-lo/prefect-with-k8

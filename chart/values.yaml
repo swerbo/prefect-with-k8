@@ -1,0 +1,134 @@
+# serverVersionTag configures the default tag for prefect server
+# images which are used for the apollo, graphql, and towel
+# services. If null, this value defaults to `appVersion` but is
+# provided here to allow override at chart install time. Each
+# service image tag can be overriden individually in their 
+# configurations but it is not recommended.
+# See https://github.com/helm/helm/issues/8194 for details
+# on why the `appVersion` cannot be set at install time.
+serverVersionTag: null
+
+# prefectVersionTag configures the default tag for Prefect Core based
+# services, including the agent and default tenant creation job.
+# This value is automatically pinned on chart release to the latest
+# core version.
+prefectVersionTag: "latest"
+
+# uiVersionTag configures the default tag for the Prefect UI service.
+# It is defined here for easy update using `sed` for automation.
+# This value is automatically pinned on chart release to the latest
+# ui version.
+uiVersionTag: "latest"
+
+# imagePullSecrets provides configuration to reference the k8s Secret
+# resources the Helm chart's pods can get credentials from to pull
+# their images.
+imagePullSecrets:
+  - name: docker-registry
+
+# annotations to merge into all object configurations
+# NOTE: These will not apply to the postgresql subchart and must be
+# defined within `postgresql` as well if that is desired
+annotations: {}
+
+# image pull secrets
+imageCredentials:
+  registry: docker.io
+  username: ""
+  password: ""
+  email: ""
+
+# agent configures a Prefect Kubernetes agent which will
+# schedule flows as jobs in the cluster
+agent:
+
+  # enabled determines if the Prefect Kubernetes agent is deployed
+  enabled: true
+
+  # prefectLabels defines what scheduling labels (not K8s labels) should
+  # be associated with the agent
+  prefectLabels: []
+
+  # image configures the container image for the agent deployment
+  image:
+    name: "tofulolo/prefect-agent"
+    tag: "latest"
+    pullPolicy: "Always"
+    pullSecrets: []
+
+  labels: {}
+  annotations: {}
+  replicas: 1
+  strategy: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # resources defines the computational resources for the Prefect Agent
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+
+  # job configures values associated with jobs the agent launches
+  job:
+    # path to default job template (within the job's Docker container)
+    # this parameter is NOT found in Prefect Server's official Helm chart
+    # if empty string, defaults to Prefect's default job template:
+    # https://github.com/PrefectHQ/prefect/blob/master/src/prefect/agent/kubernetes/job_template.yaml
+    template:
+      path: "/etc/prefect/job_template.yaml"
+
+    # resources defines the computational resources for flow jobs
+    resources:
+      limits:
+        memory: ""
+        cpu: ""
+      requests:
+        memory: ""
+        cpu: ""
+
+    # imagePullPolicy configures the image pull policy for the flow job
+    imagePullPolicy: "Always"
+
+    # imagePullSecrets defines image pull secrets for the flow job
+    # NOTE: These secrets are not merged with the global imagePullSecrets
+    imagePullSecrets: []
+
+serviceAccount:
+  # create specifies whether a service account should be created to be
+  # associated with the prefect-server infrastructure
+  create: true
+
+  # name sets the name of the service account to use
+  # If not set and create is true, a name is generated using the
+  # prefect-server.nameField template
+  name: null
+
+# environment variables passed to flow runs
+flowEnvVars:
+
+    isPipPackage: true
+    isProd: false
+    repoName: "tofulolo/prefect-with-k8"
+    gitBranch: "main"
+    githubPrId: "*"
+    agentType: "kubernetes"
+    imageName: "tofulolo/prefect-with-k8-demo"
+    imageTag: "latest"
+
+# authentication secrets
+auth:
+
+  prefect:
+    apiKey: null
+
+  github:
+    username: null
+    accessToken: null
+
+  coiled:
+    username: ""
+    accessToken: ""

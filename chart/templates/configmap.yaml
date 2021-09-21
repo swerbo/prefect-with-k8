@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flow-env-vars
+  labels: 
+    {{- include "prefect-server.commonLabels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+data:
+  is-pip-package: {{ .Values.flowEnvVars.isPipPackage | quote }}
+  is-prod: {{ .Values.flowEnvVars.isProd | quote }}
+  repo-name: {{ .Values.flowEnvVars.repoName | quote }}
+  git-branch: {{ .Values.flowEnvVars.gitBranch | quote }}
+  github-pr-id: {{ .Values.flowEnvVars.githubPrId | quote }}
+  agent-type: {{ .Values.flowEnvVars.agentType | quote }}
+  image-name: {{ .Values.flowEnvVars.imageName | quote }}
+  image-tag: {{ .Values.flowEnvVars.imageTag | quote }}
