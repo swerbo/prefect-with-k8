@@ -20,9 +20,7 @@ def split_message(message):
 def mapper(line):
     # Strip leading and trailing whitespace,
     # make lowercase, and split into tokens
-    tokens = (line.strip()
-                  .lower()
-                  .split())
+    tokens = line.strip().lower().split()
     # Return list of (token, 1) tuples
     return [(t.strip().lower(), 1) for t in tokens if t.isalpha()]
 
@@ -32,8 +30,10 @@ def shuffler(token_tuples):
     # Sort tokens
     sorted_tokens = sorted(token_tuples, key=lambda x: x[0])
     # Partition tokens
-    partitions = [(key, [value for _, value in group]) for key, group
-                  in itertools.groupby(sorted_tokens, lambda x: x[0])]
+    partitions = [
+        (key, [value for _, value in group])
+        for key, group in itertools.groupby(sorted_tokens, lambda x: x[0])
+    ]
     return partitions
 
 

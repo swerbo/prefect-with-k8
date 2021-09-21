@@ -11,7 +11,7 @@ def test_mapreduce_wordcount():
 
     state = mapreduce_wordcount.run(
         url="https://raw.githubusercontent.com/topher-lo/prefect-with-k8/main/src/prefect_kube_demo/data/dream.txt",
-        executor=DaskExecutor()
+        executor=DaskExecutor(),
     )
     task_ref = mapreduce_wordcount.get_tasks("reducer")[0]
     result = state.result[task_ref].result
