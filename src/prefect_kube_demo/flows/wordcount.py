@@ -113,7 +113,7 @@ def coiled_cluster():
     try:
         coiled_software_env = prefect.context.COILED_SOFTWARE_ENV
     except AttributeError:
-        coiled_software_env = os.environ["DEFAULT_COILED_SOFTWARE_ENV"]
+        coiled_software_env = os.environ["DEFAULT_COILED_SOFTWARE"]
     
     try:
         coiled_cluster_config = prefect.context.COILED_CLUSTER_CONFIG

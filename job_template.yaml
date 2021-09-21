@@ -1,0 +1,66 @@
+# custom job template used by Kubernetes Agent to create jobs that execute flow runs
+apiVersion: batch/v1
+kind: Job
+spec:
+  template:
+    spec:
+      containers:
+      - name: flow
+        # Install user-defined pip package before executing the flow run
+        command: ["tini", "-g", "--", "/usr/bin/prepare.sh"]
+        env:
+          - name: IS_PIP_PACKAGE
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: is-pip-package
+          - name: IS_PROD
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: is-prod
+          - name: AGENT_TYPE
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: agent-type
+          - name: REPO_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: repo-name
+          - name: GIT_BRANCH
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: git-branch
+          - name: IMAGE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: image-name
+          - name: IMAGE_TAG
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: image-tag
+          - name: DEFAULT_COILED_SOFTWARE
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: default-coiled-software
+          - name: DEFAULT_COILED_CLUSTER_CONFIG
+            valueFrom:
+              configMapKeyRef:
+                name: flow-env-vars
+                key: default-coiled-cluster-config
+          - name: GITHUB_ACCESS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: github-auth
+                key: password
+          - name: COILED_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: coiled-auth
+                key: password
